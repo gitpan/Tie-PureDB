@@ -1,0 +1,26 @@
+Tie/PureDB version 0.02
+=======================
+
+Tie::PureDB - Perl extension for pure-db
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires pure-db-2.1
+which is included in this archive..
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2003 D.H. aka PodMaster
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. 
+
