@@ -1,15 +1,16 @@
-#!/usr/bin/perl -W
+
 use strict;
-use Test::Simple tests => 32;
+use Test::Simple tests => 33;
 use Tie::PureDB;
 
 ok(1);
 
 my $final = 'fina.db';
 
-my $p = Tie::PureDB::Read->new( $final);
+my $p = Tie::PureDB::Read->new( $final)
+    or die "EEEK [$final]: $!" ;
 
-die "Eeeeek $@" unless $p;
+ok($p);
 
 ok(2);
 

@@ -1,22 +1,22 @@
-README
 Changes
+README
 MANIFEST
+MANIFEST.SKIP
 Makefile.PL
-META.yml                                Module meta-data in YAML
 PureDB.pm
 PureDB.xs
 PureDB.h
 typemap
-
 t/1.write.api.t
 t/2.write.tie.t
 t/3.read.api.t
 t/4.read.tie.t
 t/5.read.fail.t
 t/6.write.fail.t
-t/simple
-
-
+t/7.invalid.offset.t
+t/8.memoize.t
+t/simple                                Used for debugging with DEFINE=-DPureDEBUG
+META.yml                                Module meta-data in YAML
 
 pure-db-2.1/aclocal.m4
 pure-db-2.1/AUTHORS

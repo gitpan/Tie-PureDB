@@ -1,4 +1,4 @@
-#!/usr/bin/perl -W
+
 use strict;
 use Test::Simple tests => 40;
 use Tie::PureDB;

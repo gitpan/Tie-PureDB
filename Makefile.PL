@@ -18,7 +18,13 @@ my $system = 0;
 if( $^O =~ /mswin/i ) {
     $INC = ' -I./pure-db-2.1/windows ';
     $LIBS = '-L./pure-db-2.1/windows ';
-    $LDFROM = "./pure-db-2.1/windows/puredb_write$o ./pure-db-2.1/windows/puredb_read$o";
+    if( $cc =~ /bcc/ ) {
+        require File::Spec;
+        $LDFROM = File::Spec->canonpath("./pure-db-2.1/windows/puredb_write$o ");
+        $LDFROM .= File::Spec->canonpath("./pure-db-2.1/windows/puredb_read$o");
+    } else {
+        $LDFROM = "./pure-db-2.1/windows/puredb_write$o ./pure-db-2.1/windows/puredb_read$o";
+    }
 }
 
 
@@ -34,6 +40,7 @@ Attempting to compile pure-db-2.1 ... you need a compiler for this ;)
 
     if( $^O =~ /mswin/i ) {
         chdir 'pure-db-2.1/windows';
+        system qw[ clean_all.bat ];
         $system += system qw[build_cl.bat] if $cc =~ /cl/i;
         $system += system qw[build_borland.bat] if $cc =~ /bcc/i;
         chdir '..';
@@ -41,6 +48,7 @@ Attempting to compile pure-db-2.1 ... you need a compiler for this ;)
     } else {
         chdir 'pure-db-2.1';
 #        system qq[./configure CFLAGS='--save-temps $ccopts' LDFLAGS='$ldopts'];
+        system qw[ make clean ];
         $system += system qq[./configure];
         $system += system qw[make];
         chdir '..';
@@ -75,7 +83,7 @@ WriteMakefile(
     'VERSION_FROM'	=> 'PureDB.pm', # finds $VERSION
     'LDFROM'        => '$(OBJECT) '.$LDFROM,
     'INC'		    => "-I/usr/local/include $INC",
-    'DEFINE'        => '-DPureDEBUG', # if debugging
+#    'DEFINE'        => '-DPureDEBUG', # if debugging
 #    'LIBS'		=> [ ## one of these might work, but you shouldn't need it
 #        "$LIBS -llibpuredb_write -llibpuredb_read",
 #        "$LIBS -llibpuredb_write$Config{_a} -llibpuredb_read$Config{_a}",

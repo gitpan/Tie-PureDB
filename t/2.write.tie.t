@@ -1,4 +1,4 @@
-#!/usr/bin/perl -W
+
 use strict;
 use Test::Simple tests => 14;
 use Tie::PureDB;
@@ -11,9 +11,7 @@ my $final = 'fina.db';
 my %db;
 my $p = tie %db, 'Tie::PureDB::Write', "${final}.index", "${final}.data", $final;
 
-die "Eeeeek $@" unless $p;
-
-ok(2);
+ok($p);
 
 ok( $p eq tied(%db), "tied");
 

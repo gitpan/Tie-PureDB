@@ -3,9 +3,74 @@
 #include "XSUB.h"
 
 
+#include <errno.h>
+
 #include "PureDB.h"
+#include "puredb_read.h"
+#include "puredb_write.h"
 
 #undef PERL_UNUSED_VAR
+
+/*
+//perlmonks.org/?node_id=248697#panic: leave_scope inconsistency. (need help creating Tie::PureDB)
+//http://www.manning.com/jenness/
+//http://www.manning.com/getpage.html?project=jenness&filename=forum.html
+//http://www.manning.com/ao/eep/eepao.html
+//http://www.manning.com/ao/readforum.html?forum=eepao
+// = malloc(sizeof(PureDB));
+//// = malloc(sizeof(PureDB));
+//puredb_read_free(founddata);Safefree(founddata);
+//E:\new\Win32API-Registry-0.23
+
+            sv_setpvf(
+                get_sv("!", TRUE),
+                "Error Reading '%s', '%s', '%s' : %s",
+                    file_index,
+                    file_data,
+                    file_final,
+                    strerror(errno)
+            );
+
+perl E:\dev\PureDB\4.Tie-PureDB-0.02\leak.t
+E:\dev\PureDB\4.Tie-PureDB-0.02\leak.t
+##            sv_setsv(get_sv("!", TRUE),newSVpvf("Error reading '%s'",dbfile));
+##            sv_setpvf(get_sv("!", TRUE),"Error reading '%s'",dbfile);
+##            sv_setsv(get_sv("@", TRUE),newSVpvf("Error reading '%s'",dbfile));
+
+*/
+
+#ifdef PureDEBUG
+#include "perlio.h"
+
+void ReadDebug2(char * what, off_t off, size_t len) {
+    PerlIO_printf(PerlIO_stderr(),"\n\
+#/////////////////////////////////\n\
+#What               '%s'          \n\
+#       off_t offset'%d'          \n\
+#      size_t length'%d'          \n\n",
+    what, off, len
+    );
+}
+void ReadDebug(char * from, IV myIv, PureDB* foy) {
+    PerlIO_printf(PerlIO_stderr(),"\n\
+#/////////////////////////////////\n\
+#From               '%s'          \n\
+#                   '%d'          \n\
+#       PTR2IV(foy) '%d'          \n\
+#unsigned char *map '%s'          \n\
+#            int fd '%d'          \n\
+#  puredb_u32_t size'%d'          \n\n",
+    from,
+    myIv,
+    PTR2IV(foy),
+    (char*) foy->map ,
+    (int) foy->fd,
+    (puredb_u32_t) foy->size
+    );
+
+}
+#endif
+
 
 
 
@@ -97,8 +162,8 @@ void
 xs_puredb_read(db, offset, len)
     CASE:
         IV db;
-        off_t  offset;
-        size_t len;
+        off_t offset
+        size_t len
     PREINIT:
         char* founddata;
         PureDB* foy;
@@ -106,6 +171,10 @@ xs_puredb_read(db, offset, len)
     {
         foy = (PureDB*) db;
         if( ( founddata = puredb_read(foy, offset, len) ) != NULL ) {
+#ifdef PureDEBUG
+    ReadDebug( "xs_puredb_read" , db, foy );
+    ReadDebug2( founddata, offset, len );
+#endif
             XPUSHs(sv_2mortal( newSVpvn(founddata,len) ));
         } else {
             sv_setpvf(get_sv("!", TRUE),"Unknown error reading offset=%d, lenth=%d ",offset,len);
