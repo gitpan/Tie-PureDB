@@ -55,7 +55,7 @@ use DynaLoader();
 use vars qw[ @ISA $VERSION ];
 @ISA = qw( DynaLoader );
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 bootstrap Tie::PureDB $VERSION;
 

@@ -1,17 +1,22 @@
+README
 Changes
-Makefile.PL
 MANIFEST
+Makefile.PL
+META.yml                                Module meta-data in YAML
 PureDB.pm
 PureDB.xs
-puredb_version.h
-README
+PureDB.h
+typemap
+
 t/1.write.api.t
 t/2.write.tie.t
 t/3.read.api.t
 t/4.read.tie.t
 t/5.read.fail.t
 t/6.write.fail.t
-META.yml                                Module meta-data in YAML
+t/simple
+
+
 
 pure-db-2.1/aclocal.m4
 pure-db-2.1/AUTHORS

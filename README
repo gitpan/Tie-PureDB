@@ -1,4 +1,4 @@
-Tie/PureDB version 0.02
+Tie/PureDB version 0.03
 =======================
 
 Tie::PureDB - Perl extension for pure-db
@@ -14,8 +14,8 @@ To install this module type the following:
 
 DEPENDENCIES
 
-This module requires pure-db-2.1
-which is included in this archive..
+This module requires that you have a compiler.
+This module requires pure-db-2.1 which is included.
 
 COPYRIGHT AND LICENCE
 

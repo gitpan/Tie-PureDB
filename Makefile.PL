@@ -5,67 +5,87 @@ use Config;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 
-my $build= @ARGV;
-my $LIBS="";
-my $INC="";
-my $cc = $Config{cc};
+my $build  = 1; #grep { /^--build/ } @ARGV; # no real good reason to ever skip this
+my $cc     = $Config{cc};
+my $o      = $Config{_o};
 my $ccopts = ccopts();
 my $ldopts = ldopts();
+my    $INC = ' -I./pure-db-2.1/src ';
+my   $LIBS = '-L./pure-db-2.1/src/.libs ';
+my $LDFROM = "./pure-db-2.1/src/puredb_write$o ./pure-db-2.1/src/puredb_read$o";
+my $system = 0;
 
 if( $^O =~ /mswin/i ) {
     $INC = ' -I./pure-db-2.1/windows ';
     $LIBS = '-L./pure-db-2.1/windows ';
-
-    if($build){
-        chdir 'pure-db-2.1/windows';
-        system qw[build_cl.bat] if $cc =~ /cl/i;
-        system qw[build_borland.bat] if $cc =~ /bcc/i;
-        chdir '../..';
-    }
-
-} else {
-####################### doesn't work so well ;(
-    $INC = ' -I./pure-db-2.1/src ';
-    $LIBS = '-L./pure-db-2.1/src/.libs ';
-
-    if($build){
-        chdir 'pure-db-2.1';
-        system qq[./configure CFLAGS='$ccopts' LDFLAGS='$ldopts'];
-        system qw[make];
-        chdir '../..';
-    }
+    $LDFROM = "./pure-db-2.1/windows/puredb_write$o ./pure-db-2.1/windows/puredb_read$o";
 }
 
-print qq[
 
-#
-# If you get warnings similar to
-#
-#    Note (probably harmless): No library found for -llibpuredb_write.lib
-#    Note (probably harmless): No library found for -llibpuredb_read.lib
-#
-# Try executing `perl Makefile.PL 1', and see if pure-db-2.1 gets built.
-# I have only tested this on Win32 ActivePerl.
-# If you cannot build pure-db-2.1, then you cannot build Tie::PureDB.
-#
-#
 
-] unless $build;
+if($build){
+    print q[
+
+
+Attempting to compile pure-db-2.1 ... you need a compiler for this ;)
+
+
+];
+
+    if( $^O =~ /mswin/i ) {
+        chdir 'pure-db-2.1/windows';
+        $system += system qw[build_cl.bat] if $cc =~ /cl/i;
+        $system += system qw[build_borland.bat] if $cc =~ /bcc/i;
+        chdir '..';
+        chdir '..';
+    } else {
+        chdir 'pure-db-2.1';
+#        system qq[./configure CFLAGS='--save-temps $ccopts' LDFLAGS='$ldopts'];
+        $system += system qq[./configure];
+        $system += system qw[make];
+        chdir '..';
+    }
+
+}
+
+if( $system ) {
+    die q[
+
+
+Something went wrong building pure-db-2.1 (perhaps you have no compiler?)
+Makefile not written.
+
+
+    
+];
+
+}
+
+print q[
+
+
+Successfully compiled pure-db-2.1 ... or so I think ;)
+
+
+];
+
 
 WriteMakefile(
-    'NAME'		=> 'Tie::PureDB',
+    'NAME'	    	=> 'Tie::PureDB',
     'VERSION_FROM'	=> 'PureDB.pm', # finds $VERSION
-    'LIBS'		=> [ ## one of these should work
-        "$LIBS -llibpuredb_write -llibpuredb_read",
-        "$LIBS -llibpuredb_write$Config{_a} -llibpuredb_read$Config{_a}",
-        "-L/usr/local/lib/ -llibpuredb_write -llibpuredb_read",
-    ],
-    'INC'		=> "-I/usr/local/include $INC",
+    'LDFROM'        => '$(OBJECT) '.$LDFROM,
+    'INC'		    => "-I/usr/local/include $INC",
+    'DEFINE'        => '-DPureDEBUG', # if debugging
+#    'LIBS'		=> [ ## one of these might work, but you shouldn't need it
+#        "$LIBS -llibpuredb_write -llibpuredb_read",
+#        "$LIBS -llibpuredb_write$Config{_a} -llibpuredb_read$Config{_a}",
+#        "-L/usr/local/lib/ -llibpuredb_write -llibpuredb_read",
+#    ],
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'PureDB.pm', # retrieve abstract from module
        AUTHOR     => 'D. H. <PodMaster@cpan.org>') : ()),
-
 );
+
 
 __END__
 

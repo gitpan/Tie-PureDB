@@ -1,0 +1,5 @@
+## ExtUtils::ParseXS's xsubpp needs this, weird
+TYPEMAP
+
+off_t T_IV
+size_t T_UV

@@ -38,10 +38,10 @@ pkglibdir = $(libdir)/pure-db
 pkgincludedir = $(includedir)/pure-db
 top_builddir = .
 
-ACLOCAL = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/missing --run aclocal-1.6
-AUTOCONF = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/missing --run autoconf
-AUTOMAKE = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/missing --run automake-1.6
-AUTOHEADER = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/missing --run autoheader
+ACLOCAL = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/missing --run aclocal-1.6
+AUTOCONF = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/missing --run autoconf
+AUTOMAKE = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/missing --run automake-1.6
+AUTOHEADER = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/missing --run autoheader
 
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = /usr/bin/install -c
@@ -64,7 +64,7 @@ host_triplet = i686-pc-cygwin
 EXEEXT = .exe
 OBJEXT = o
 PATH_SEPARATOR = :
-AMTAR = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/missing --run tar
+AMTAR = ${SHELL} /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/missing --run tar
 AS = @AS@
 AWK = gawk
 CC = gcc
@@ -72,7 +72,7 @@ DEPDIR = .deps
 DLLTOOL = @DLLTOOL@
 ECHO = echo
 INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
-ISODATE = 2003-04-15
+ISODATE = 2003-04-17
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 OBJDUMP = @OBJDUMP@
@@ -82,7 +82,7 @@ STRIP = strip
 VERSION = 2.1
 am__include = include
 am__quote = 
-install_sh = /cygdrive/e/dev/PureDB/Tie-PureDB-0.02/pure-db-2.1/install-sh
+install_sh = /cygdrive/e/dev/PureDB/Tie-PureDB-0.03/pure-db-2.1/install-sh
 SUBDIRS = \
 	src
 

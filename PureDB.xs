@@ -2,64 +2,10 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#include "perlio.h"
-#include <errno.h>
 
-
-#include "puredb_version.h"
-#include "puredb_p.h"
-#include "puredb_read.h"
-#include "puredb_write.h"
+#include "PureDB.h"
 
 #undef PERL_UNUSED_VAR
-
-/*
-//perlmonks.org/?node_id=248697#panic: leave_scope inconsistency. (need help creating Tie::PureDB)
-//http://www.manning.com/jenness/
-//http://www.manning.com/getpage.html?project=jenness&filename=forum.html
-//http://www.manning.com/ao/eep/eepao.html
-//http://www.manning.com/ao/readforum.html?forum=eepao
-// = malloc(sizeof(PureDB));
-//// = malloc(sizeof(PureDB));
-//puredb_read_free(founddata);Safefree(founddata);
-//E:\new\Win32API-Registry-0.23
-
-            sv_setpvf(
-                get_sv("!", TRUE),
-                "Error Reading '%s', '%s', '%s' : %s",
-                    file_index,
-                    file_data,
-                    file_final,
-                    strerror(errno)
-            );
-
-perl E:\dev\PureDB\4.Tie-PureDB-0.02\leak.t
-E:\dev\PureDB\4.Tie-PureDB-0.02\leak.t
-##            sv_setsv(get_sv("!", TRUE),newSVpvf("Error reading '%s'",dbfile));
-##            sv_setpvf(get_sv("!", TRUE),"Error reading '%s'",dbfile);
-##            sv_setsv(get_sv("@", TRUE),newSVpvf("Error reading '%s'",dbfile));
-
-void DumpDebuggery(char * from, IV myIv, PureDB* foy) {
-    PerlIO_printf(PerlIO_stderr(),"\n\
-#/////////////////////////////////\n\
-#From                       %s    \n\
-#                   '%d'          \n\
-#       PTR2IV(foy) '%d'          \n\
-#unsigned char *map '%s'          \n\
-#            int fd '%d'          \n\
-#  puredb_u32_t size'%d'          \n\n",
-    from,
-    myIv,
-    PTR2IV(foy),
-    (char*) foy->map ,
-    (int) foy->fd,
-    (puredb_u32_t) foy->size
-    );
-
-}
-
-*/
-
 
 
 
@@ -151,8 +97,8 @@ void
 xs_puredb_read(db, offset, len)
     CASE:
         IV db;
-        long offset
-        long len
+        off_t  offset;
+        size_t len;
     PREINIT:
         char* founddata;
         PureDB* foy;
@@ -255,3 +201,4 @@ xs_free(dbw)
         puredbw_close(foy);
         puredbw_free(foy);
         Safefree(foy);
+
